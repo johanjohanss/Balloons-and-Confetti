@@ -1,0 +1,212 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: "Helvetica";
+}
+
+//Balloons
+@function rndValue(){
+    @return percentage(random((100 - 15)) / 100);
+}
+
+@function topStart(){
+    //@return percentage(random(100) / 100);
+    @return 110%;
+}
+
+@function rndSpeed(){
+    //$random: random(15) + 5 ;
+    @return (random(20) + 12) + s;
+}
+
+@function randomColor(){
+    @return rgb(255, 255, random(255));
+}
+
+@function randomWidth(){
+    @return percentage(random((8) + 2) / 100);
+}
+
+@function randomRotation(){
+    @return random(60) - 30;
+}
+@function randomRotation2(){
+    @return random(20) - 10;
+}
+
+//confetti
+@function confettiWidth(){
+    @return percentage(random((2)) / 160);
+}
+@function confettiRotation(){
+    @return random(360);
+}
+@function confettiColor(){
+    @return rgb(random(255), 255, random(255));
+}
+@function confettiSpeed(){
+    @return (random(5) + 8) + s;
+}
+@function confettiTop(){
+    @return percentage(random((50)) / 100);
+}
+@function confettiStart(){
+    @return percentage(random((100 - 15)) / 100);
+}
+@function skew(){
+    @return random(360);
+}
+@function randomZ(){
+    @return random(2) - 2;
+}
+@function smallRotation(){
+    @return random(10) - 10;
+}
+
+
+@mixin float-mix($name, $time, $topStart, $x, $xEnd){
+
+    animation: $name $time linear forwards;
+
+    @keyframes #{$name}{
+        0%{
+            transform: rotate(randomRotation() + deg);
+            //transform: rotate(100deg);
+            top: $topStart;
+            left: $x;//50%;//$x;
+        }
+        25%{
+            transform: rotate(0deg);
+        }
+        45%{
+            transform: rotate(0deg);
+        }
+        100%{
+            top: calc(#{$topStart} - 140%);
+            left: $xEnd;
+            transform: rotate(randomRotation2() + deg);
+        }
+    }
+
+}
+
+@mixin confetti-mix($name, $time, $topStart, $x, $xEnd){
+
+    animation: $name $time ease forwards;
+    
+    @keyframes #{$name}{
+        0%{
+            
+            transform: rotateY(confettiRotation() + deg);
+            transform: rotate(confettiRotation() + deg);
+            //transform: rotate(100deg);
+            top: $topStart;
+            left: $x;//50%;//$x;
+            //filter: blur(3px);
+        }
+        10%{
+            //transform: rotate(confettiRotation() + deg);
+            //transform: rotateY(confettiRotation() + deg);
+            transform: rotate(confettiRotation() + deg) rotateY(confettiRotation() + deg);
+            top: confettiTop();
+            left: $xEnd;
+            //filter: blur(0px);
+        }
+        15%{
+            //filter: blur(0px);
+        }
+        80%{
+            transform: rotateY(confettiRotation() + deg) rotate(confettiRotation() + deg);
+        }
+        100%{
+            //transform: rotate(confettiRotation() + deg);
+            transform: rotateY(confettiRotation() + deg) rotate(confettiRotation() + deg);
+            // transform: rotate(confettiRotation() + deg);
+             top: 120%;
+             left: $xEnd;
+        }
+    }
+}
+
+svg{
+    width: 0%;
+}
+
+$i: 1;
+
+@for $i from 1 through 13{
+    .balloon:nth-child(#{$i}){
+        position: absolute;
+        //name, time, yStartPosition, xPosition
+        $name: balloonFloat#{$i};
+        @include float-mix($name, confettiSpeed(), topStart(), rndValue(), rndValue()); 
+        fill: randomColor();
+        width: randomWidth();
+       
+        
+    }
+}
+
+$c: 1;
+
+@for $c from 1 through 56{
+    .confetti:nth-child(#{$c}){
+        position: absolute;
+        //name, time, yStartPosition, xPosition
+        $name: confetti#{$c};
+        @include confetti-mix($name, confettiSpeed(), topStart(), 50%, confettiStart()); 
+        fill: confettiColor();
+        width: confettiWidth();
+        //transform: skewY(skew() + deg);  
+        z-index: randomZ();
+    }
+}
+
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    //background-color: rgb(22, 25, 41);
+}
+
+.container{
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+}
+
+.balloon-trigger{
+    background-color: rgb(255, 255, 106);
+    color: rgb(80, 52, 64);
+    padding: 2rem;
+    font-size: 2rem;
+    border: none;
+    border-radius: 0.35rem;
+    //transform-origin: center center;
+    
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    transition: transform 1s; 
+    
+
+}
+
+.balloon-trigger:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+    transform-origin: 50% 50%;
+    transition: transform 1s; 
+}
+
+.balloon-trigger:focus{
+    outline: none;
+}
+
+
+
