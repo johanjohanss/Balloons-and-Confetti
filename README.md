@@ -1,2 +1,2 @@
 # balloons-and-confetti
- balloons and confetti animation made with mainly sass and html
+ balloons and confetti animation made mainly with sass and html
